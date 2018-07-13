@@ -1,0 +1,1 @@
+### jquery post方式的contentType只支持 application/x-www-form-urlencoded;charset=utf-8格式，所以不能使用RequestBody直接影射成model，只好自己写Map再转换了
