@@ -1,10 +1,11 @@
 package yang;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
@@ -14,12 +15,13 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  **/
 @SpringBootApplication
 @EnableScheduling
-@ComponentScan
 public class Application implements EmbeddedServletContainerCustomizer {
 
+    public static Logger logger = LoggerFactory.getLogger(Application.class);
     public static void main(String[] args) {
+        logger.error("Hello World");
         SpringApplication.run(Application.class, args);
-        System.out.println("Hello World");
+        logger.error("Link Start!");
     }
 
     @Override

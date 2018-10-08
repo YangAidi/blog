@@ -8,6 +8,8 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import yang.enums.BackendEnum;
@@ -32,6 +34,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/")
 public class UserController {
+    public  static Logger logger = LoggerFactory.getLogger(UserController.class);
+
     @Resource
     private UserService userService;
 
@@ -41,7 +45,7 @@ public class UserController {
                         @RequestParam("password") String password,
                         HttpServletRequest request, HttpServletResponse response) {
         Reply reply = Reply.buildTrue();
-        System.out.println("SessionId:" + request.getSession().getId());
+        logger.error("SessionId:" + request.getSession().getId());
 
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
             reply.setErrMsg(BackendEnum.PARAM_ERROR);
@@ -79,7 +83,7 @@ public class UserController {
     @Transactional
     public Reply isLogin(HttpServletRequest request) {
         Reply reply = Reply.buildTrue();
-        System.out.println("SessionId:" + request.getSession().getId());
+        logger.error("SessionId:" + request.getSession().getId());
         User user=SessionUtil.getUser();
         if(user!=null){
             reply.put("user",user);
@@ -107,7 +111,7 @@ public class UserController {
     public Reply login(@RequestBody User theUser,
                        HttpServletRequest request, HttpServletResponse response) {
         Reply reply = Reply.buildTrue();
-        System.out.println("SessionId:" + request.getSession().getId());
+        logger.error("SessionId:" + request.getSession().getId());
         String username=theUser.getUsername();
         String password=theUser.getPassword();
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
@@ -177,13 +181,13 @@ public class UserController {
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public Reply logout(HttpServletRequest request) {
         Reply reply = Reply.buildTrue();
-        System.out.println("SessionId:" + request.getSession().getId());
+        logger.error("SessionId:" + request.getSession().getId());
         try {
             //退出
             SecurityUtils.getSubject().logout();
             reply.put("judge", 0);
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            logger.error(e.getMessage());
         }
 
         return reply;

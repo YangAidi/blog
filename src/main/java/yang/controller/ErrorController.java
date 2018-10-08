@@ -1,9 +1,10 @@
 package yang.controller;
 
-import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,15 +17,15 @@ import yang.exception.UnauthorizedException;
  **/
 @RestController
 public class ErrorController {
-    private Logger logger = Logger.getLogger(getClass());
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @RequestMapping(value = "/error", method = RequestMethod.GET)
     public String error() {
         try {
             testException();
         } catch (UnauthorizedException e) {
-            System.out.println("MsgDes\t" + e.getMsgDes());
-            System.out.println("RetCd\t" + e.getRetCd());
+            logger.error("MsgDes\t" + e.getMsgDes());
+            logger.error("RetCd\t" + e.getRetCd());
             return e.toString();
         }
         return "";

@@ -1,5 +1,7 @@
 package yang.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +24,8 @@ import java.util.List;
  **/
 @RestController
 public class ArticleController {
+
+    public  static Logger logger = LoggerFactory.getLogger(ArticleController.class);
     @Resource
     private ArticleService articleService;
 
@@ -31,7 +35,7 @@ public class ArticleController {
                        @RequestParam("limit") Integer limit,
                        HttpServletRequest request, HttpServletResponse response) {
         ReplyArray reply = ReplyArray.buildTrue();
-        System.out.println("SessionId:" + request.getSession().getId());
+        logger.error("SessionId:" + request.getSession().getId());
         List<Article> articles=articleService.getArticles(offset,limit);
         for(Article article:articles)
         {
@@ -45,7 +49,7 @@ public class ArticleController {
     public Reply getArticleDetail(@RequestParam("id") Integer id,
                                  HttpServletRequest request, HttpServletResponse response) {
         Reply reply = Reply.buildTrue();
-        System.out.println("SessionId:" + request.getSession().getId());
+        logger.error("SessionId:" + request.getSession().getId());
         Article article=articleService.getArticleDetail(id);
         if (article != null) {
             reply.put("article",article);
